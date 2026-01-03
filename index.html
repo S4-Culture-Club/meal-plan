@@ -93,6 +93,14 @@
     .btn-secondary{flex:1;min-width:140px;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-weight:600;cursor:pointer}
     .btn-secondary:hover{background:#e5e7eb}
     .tesco-badge{background:#ee1c2e;color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;margin-left:4px}
+    .qr-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center}
+    .qr-modal.show{display:flex}
+    .qr-content{background:white;padding:24px;border-radius:16px;text-align:center;max-width:320px;margin:16px}
+    .qr-content h3{margin-bottom:8px;color:#1f2937}
+    .qr-content p{font-size:0.875rem;color:#6b7280;margin-bottom:16px}
+    .qr-content img{border-radius:8px;margin-bottom:16px;max-width:200px}
+    .qr-close{padding:10px 24px;background:#b45309;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer}
+    .qr-close:hover{background:#92400e}
   </style>
 </head>
 <body>
@@ -112,6 +120,15 @@
     <div id="plan-tab"></div>
     <div id="recipes-tab" class="hidden"></div>
     <div id="shopping-tab" class="hidden"></div>
+    <div id="qr-modal" class="qr-modal" onclick="closeQR(event)">
+      <div class="qr-content">
+        <h3>📱 Send to Phone</h3>
+        <p>Scan this QR code with your phone to view the shopping list</p>
+        <img id="qr-image" src="" alt="QR Code">
+        <br>
+        <button class="qr-close" onclick="closeQR()">Close</button>
+      </div>
+    </div>
   </div>
 <script>
 var mealData = {
@@ -397,7 +414,8 @@ function renderShoppingTab() {
   });
   
   html += '<div class="btn-row"><button class="copy-btn" onclick="copyList()">📋 Copy to Clipboard</button>';
-  html += '<button class="btn-secondary" onclick="shareList()">📤 Share</button></div></div>';
+  html += '<button class="btn-secondary" onclick="shareList()">📤 Share</button>';
+  html += '<button class="btn-secondary" onclick="showQR()">📱 Send to Phone</button></div></div>';
   
   container.innerHTML = html;
 }
@@ -792,6 +810,41 @@ function shareList() {
     navigator.share({ title: 'Shopping List', text: text });
   } else {
     copyList();
+  }
+}
+
+function showQR() {
+  var list = getShoppingList();
+  var grouped = {};
+  list.forEach(function(item) {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push(item);
+  });
+  
+  var catOrder = ['meat','dairy','vegetables','fruits','grains','spices','pantry','other'];
+  var text = 'TESCO SHOPPING LIST\n';
+  
+  catOrder.forEach(function(cat) {
+    if (grouped[cat] && grouped[cat].length > 0) {
+      text += '\n' + categoryLabels[cat].replace(/[^\w\s&]/g, '') + '\n';
+      grouped[cat].sort(function(a,b) { return a.name.localeCompare(b.name); });
+      grouped[cat].forEach(function(item) {
+        text += '- ' + item.displayName + '\n';
+      });
+    }
+  });
+  
+  // Generate QR code using API
+  var encoded = encodeURIComponent(text);
+  var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encoded;
+  
+  document.getElementById('qr-image').src = qrUrl;
+  document.getElementById('qr-modal').classList.add('show');
+}
+
+function closeQR(event) {
+  if (!event || event.target.id === 'qr-modal') {
+    document.getElementById('qr-modal').classList.remove('show');
   }
 }
 
