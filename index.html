@@ -3,865 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>European Family Meal Plan - Tesco UK</title>
+  <title>Health Hub - Your Fitness Journey</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);min-height:100vh;padding:16px}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1e293b 0%,#334155 50%,#475569 100%);min-height:100vh;padding:24px;color:#f1f5f9}
     .container{max-width:900px;margin:0 auto}
-    .header{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
-    .header h1{color:#92400e;font-size:1.75rem;margin-bottom:8px}
-    .header p{color:#6b7280;font-size:0.875rem;margin-bottom:8px}
-    .header .targets{font-size:0.8rem;color:#92400e;margin-bottom:4px}
-    .header .tip{font-size:0.75rem;color:#6b7280;background:#fffbeb;padding:8px;border-radius:8px;margin-top:8px}
-    .flags{font-size:1.5rem;margin-bottom:12px}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-    .tab{padding:10px 20px;border-radius:8px;border:none;font-weight:600;cursor:pointer;transition:all 0.2s}
-    .tab.active{background:#b45309;color:white}
-    .tab:not(.active){background:#f3f4f6;color:#4b5563}
-    .tab:hover:not(.active){background:#e5e7eb}
-    .progress-bar{background:#b45309;color:white;border-radius:12px;padding:16px;margin-bottom:24px}
-    .progress-bar .info{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
-    .progress-track{background:#92400e;border-radius:999px;height:8px}
-    .progress-fill{background:white;border-radius:999px;height:8px;transition:width 0.3s}
-    .day-card{background:white;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-    .day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-    .day-header h2{font-size:1.125rem;color:#1f2937}
-    .day-macros{font-size:0.75rem;color:#6b7280}
-    .meal-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-    .meal-label{width:100px;font-size:0.875rem;font-weight:500;color:#4b5563;flex-shrink:0}
-    .meal-selector{flex:1;min-width:200px;position:relative}
-    .meal-btn{width:100%;padding:12px;border:2px solid #e5e7eb;border-radius:8px;background:white;text-align:left;cursor:pointer;transition:all 0.2s}
-    .meal-btn:hover{border-color:#fbbf24}
-    .meal-btn.selected{border-color:#b45309;background:#fffbeb}
-    .meal-btn .name{font-weight:500;color:#1f2937}
-    .meal-btn .meta{font-size:0.75rem;color:#6b7280}
-    .meal-btn .cals{font-size:0.75rem;color:#b45309;font-weight:500}
-    .clear-btn{background:none;border:none;color:#ef4444;cursor:pointer;padding:8px;font-size:1.25rem}
-    .dropdown{position:absolute;top:100%;left:0;right:0;background:white;border:2px solid #fbbf24;border-radius:12px;max-height:400px;overflow-y:auto;z-index:100;box-shadow:0 10px 25px rgba(0,0,0,0.15);margin-top:4px}
-    .dropdown-item{padding:16px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background 0.2s}
-    .dropdown-item:hover{background:#fffbeb}
-    .dropdown-item:last-child{border-bottom:none}
-    .dropdown-item .top{display:flex;justify-content:space-between;margin-bottom:4px;align-items:flex-start;flex-wrap:wrap;gap:4px}
-    .dropdown-item .title{font-weight:600;color:#1f2937}
-    .dropdown-item .cuisine{font-size:0.7rem;background:#f3f4f6;color:#4b5563;padding:2px 8px;border-radius:999px;white-space:nowrap}
-    .dropdown-item .macros{font-size:0.75rem;color:#6b7280}
-    .dropdown-item .desc{font-size:0.875rem;color:#6b7280;margin-bottom:8px}
-    .dropdown-item .ingredients{display:flex;flex-wrap:wrap;gap:4px}
-    .dropdown-item .ing{font-size:0.7rem;background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px}
-    .recipe-card{background:white;border-radius:12px;margin-bottom:16px;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-    .recipe-day-header{background:#b45309;color:white;padding:12px 16px;font-weight:600}
-    .recipe-item{border-bottom:1px solid #f3f4f6}
-    .recipe-item:last-child{border-bottom:none}
-    .recipe-toggle{width:100%;padding:16px;background:none;border:none;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center}
-    .recipe-toggle:hover{background:#f9fafb}
-    .recipe-toggle .meal-type{font-size:0.75rem;color:#b45309;font-weight:500}
-    .recipe-toggle .title{font-weight:600;color:#1f2937}
-    .recipe-toggle .desc{font-size:0.875rem;color:#6b7280}
-    .recipe-toggle .arrow{font-size:1.25rem;color:#9ca3af}
-    .recipe-details{padding:0 16px 16px;background:#f9fafb}
-    .macro-tags{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-    .macro-tag{font-size:0.75rem;padding:4px 12px;border-radius:4px}
-    .macro-tag.cal{background:#ffedd5;color:#c2410c}
-    .macro-tag.pro{background:#dbeafe;color:#1d4ed8}
-    .macro-tag.carb{background:#fef3c7;color:#b45309}
-    .macro-tag.fat{background:#f3e8ff;color:#7c3aed}
-    .macro-tag.time{background:#dcfce7;color:#166534}
-    .recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media(max-width:600px){.recipe-grid{grid-template-columns:1fr}.meal-row{flex-direction:column;align-items:stretch}.meal-label{width:auto}}
-    .recipe-section h4{font-weight:600;color:#374151;margin-bottom:8px}
-    .recipe-section ul{list-style:none}
-    .recipe-section li{font-size:0.875rem;color:#4b5563;padding:4px 0;display:flex;align-items:flex-start;gap:8px}
-    .recipe-section li::before{content:"";width:6px;height:6px;background:#b45309;border-radius:50%;margin-top:6px;flex-shrink:0}
-    .recipe-section p{font-size:0.875rem;color:#4b5563;line-height:1.6}
-    .shopping-list{background:white;border-radius:12px;padding:24px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
-    .shopping-list h2{font-size:1.25rem;color:#1f2937;margin-bottom:16px}
-    .shopping-info{background:#fffbeb;padding:12px;border-radius:8px;margin-bottom:16px;font-size:0.875rem;color:#92400e}
-    .shopping-item{display:flex;align-items:center;gap:12px;padding:12px;background:#f9fafb;border-radius:8px;margin-bottom:8px}
-    .shopping-item input{width:20px;height:20px;accent-color:#b45309}
-    .shopping-item span{flex:1;color:#374151}
-    .copy-btn{width:100%;padding:12px;background:#b45309;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-top:16px}
-    .copy-btn:hover{background:#92400e}
-    .empty-state{text-align:center;padding:48px;background:white;border-radius:12px}
-    .empty-state .icon{font-size:3rem;margin-bottom:16px}
-    .empty-state h3{color:#374151;margin-bottom:8px}
-    .empty-state p{color:#6b7280}
-    .hidden{display:none}
-    .time-badge{display:inline-block;font-size:0.7rem;background:#dcfce7;color:#166534;padding:2px 6px;border-radius:4px;margin-left:6px}
-    .category-section{margin-bottom:20px}
-    .category-header{font-size:1rem;color:#92400e;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #fef3c7}
-    .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-    .btn-secondary{flex:1;min-width:140px;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-weight:600;cursor:pointer}
-    .btn-secondary:hover{background:#e5e7eb}
-    .tesco-badge{background:#ee1c2e;color:white;font-size:0.65rem;padding:2px 6px;border-radius:4px;margin-left:4px}
-    .qr-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center}
-    .qr-modal.show{display:flex}
-    .qr-content{background:white;padding:24px;border-radius:16px;text-align:center;max-width:320px;margin:16px}
-    .qr-content h3{margin-bottom:8px;color:#1f2937}
-    .qr-content p{font-size:0.875rem;color:#6b7280;margin-bottom:16px}
-    .qr-content img{border-radius:8px;margin-bottom:16px;max-width:200px}
-    .qr-close{padding:10px 24px;background:#b45309;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer}
-    .qr-close:hover{background:#92400e}
+    .header{text-align:center;margin-bottom:40px;padding:40px 20px}
+    .header h1{font-size:2.5rem;margin-bottom:12px;background:linear-gradient(135deg,#60a5fa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .header p{color:#94a3b8;font-size:1.1rem;max-width:500px;margin:0 auto}
+    .stats-bar{display:flex;justify-content:center;gap:32px;margin:32px 0;flex-wrap:wrap}
+    .stat{text-align:center}
+    .stat-value{font-size:2rem;font-weight:700;color:#60a5fa}
+    .stat-label{font-size:0.8rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px}
+    .section-title{font-size:1.25rem;color:#e2e8f0;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+    .section-title span{font-size:1.5rem}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+    .card{background:linear-gradient(145deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;transition:all 0.3s;cursor:pointer;text-decoration:none;color:inherit;display:block}
+    .card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.2)}
+    .card-icon{font-size:3rem;margin-bottom:16px}
+    .card h3{font-size:1.25rem;margin-bottom:8px;color:#f1f5f9}
+    .card p{color:#94a3b8;font-size:0.9rem;line-height:1.5;margin-bottom:16px}
+    .card-tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{font-size:0.7rem;padding:4px 10px;border-radius:999px;font-weight:500}
+    .tag.european{background:rgba(251,191,36,0.2);color:#fbbf24}
+    .tag.quick{background:rgba(96,165,250,0.2);color:#60a5fa}
+    .tag.healthy{background:rgba(52,211,153,0.2);color:#34d399}
+    .tag.mild{background:rgba(248,113,113,0.2);color:#f87171}
+    .tag.tesco{background:#ee1c2e;color:white}
+    .card-arrow{display:flex;justify-content:flex-end;margin-top:16px;color:#60a5fa;font-size:1.25rem}
+    .tips-section{background:linear-gradient(145deg,rgba(52,211,153,0.1),rgba(52,211,153,0.05));border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:24px;margin-bottom:40px}
+    .tips-section h3{color:#34d399;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+    .tip{background:rgba(0,0,0,0.2);padding:16px;border-radius:12px}
+    .tip-title{font-weight:600;color:#e2e8f0;margin-bottom:4px;font-size:0.9rem}
+    .tip-text{color:#94a3b8;font-size:0.8rem;line-height:1.4}
+    .goals-section{background:linear-gradient(145deg,rgba(96,165,250,0.1),rgba(96,165,250,0.05));border:1px solid rgba(96,165,250,0.2);border-radius:16px;padding:24px;margin-bottom:40px}
+    .goals-section h3{color:#60a5fa;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .goal-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .goal-item:last-child{border-bottom:none}
+    .goal-check{width:24px;height:24px;border:2px solid #60a5fa;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;cursor:pointer;transition:all 0.2s}
+    .goal-check.checked{background:#60a5fa;color:#1e293b}
+    .goal-text{flex:1;color:#e2e8f0;font-size:0.9rem}
+    .goal-text.checked{text-decoration:line-through;color:#64748b}
+    .footer{text-align:center;padding:24px;color:#64748b;font-size:0.8rem}
+    .workout-preview{background:linear-gradient(145deg,rgba(251,146,60,0.1),rgba(251,146,60,0.05));border:1px solid rgba(251,146,60,0.2);border-radius:16px;padding:24px;margin-bottom:40px}
+    .workout-preview h3{color:#fb923c;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .workout-note{background:rgba(251,146,60,0.1);padding:12px;border-radius:8px;font-size:0.85rem;color:#fdba74;margin-bottom:16px}
+    .exercise-list{display:grid;gap:12px}
+    .exercise{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:10px}
+    .exercise-icon{font-size:1.5rem}
+    .exercise-info h4{color:#e2e8f0;font-size:0.9rem;margin-bottom:2px}
+    .exercise-info p{color:#94a3b8;font-size:0.75rem}
+    .shoulder-safe{font-size:0.65rem;background:rgba(52,211,153,0.2);color:#34d399;padding:2px 8px;border-radius:999px;margin-left:8px}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div class="flags">🇧🇬 🇧🇾 🇵🇱 🇺🇦 🇷🇴 🇭🇺 🇬🇷 🇮🇹 🇪🇸 🇩🇪 <span class="tesco-badge">TESCO UK</span></div>
-      <h1>🥘 European Family Meal Plan</h1>
-      <p>Bulgarian • Belarusian • Polish • Greek • Italian • Hungarian • Quick dinners (30-40 min) ⏱️</p>
-      <p class="targets"><strong>👨 Dad:</strong> ~1600-1800 cal/day (weight loss) | <strong>👩 Mum:</strong> ~1600-1800 cal | <strong>👧 Child (4yo):</strong> ~1200-1400 cal</p>
-      <div class="tip">💡 <strong>Portions:</strong> Ingredients scaled for 2 adults + 1 child. All ingredients available at Tesco UK.</div>
-      <div class="tabs">
-        <button class="tab active" data-tab="plan">📅 Plan</button>
-        <button class="tab" data-tab="recipes">👨‍🍳 Recipes</button>
-        <button class="tab" data-tab="shopping">🛒 Shopping</button>
+      <h1>💪 Your Health Hub</h1>
+      <p>Your personal fitness journey starts here. Meal plans, workout guides, and daily motivation all in one place.</p>
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="stat-value">1600-1800</div>
+          <div class="stat-label">Daily Calories Target</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">~150g</div>
+          <div class="stat-label">Carbs Limit</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">30 min</div>
+          <div class="stat-label">Max Cook Time</div>
+        </div>
       </div>
     </div>
-    <div id="plan-tab"></div>
-    <div id="recipes-tab" class="hidden"></div>
-    <div id="shopping-tab" class="hidden"></div>
-    <div id="qr-modal" class="qr-modal" onclick="closeQR(event)">
-      <div class="qr-content">
-        <h3>📱 Send to Phone</h3>
-        <p>Scan this QR code with your phone to view the shopping list</p>
-        <img id="qr-image" src="" alt="QR Code">
-        <br>
-        <button class="qr-close" onclick="closeQR()">Close</button>
+
+    <h2 class="section-title"><span>🍽️</span> Meal Plans</h2>
+    <div class="cards">
+      <a href="European Family Meal Plan - Tesco UK.html" class="card">
+        <div class="card-icon">🥘</div>
+        <h3>European Family Meal Plan</h3>
+        <p>Bulgarian, Polish, Greek, Italian, Hungarian and more. Authentic Eastern European recipes adapted for Tesco UK ingredients.</p>
+        <div class="card-tags">
+          <span class="tag european">🇧🇬 Eastern European</span>
+          <span class="tag quick">⏱️ 30-40 min</span>
+          <span class="tag tesco">TESCO UK</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="Quick & Healthy Family Meal Plan.html" class="card">
+        <div class="card-icon">🥗</div>
+        <h3>Quick & Healthy Meals</h3>
+        <p>International favourites, all under 30 minutes. High protein, balanced carbs, perfect for weight loss goals.</p>
+        <div class="card-tags">
+          <span class="tag healthy">🥗 Healthy</span>
+          <span class="tag quick">⏱️ Under 30 min</span>
+          <span class="tag mild">😊 Mild</span>
+          <span class="tag tesco">TESCO UK</span>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+
+    <div class="tips-section">
+      <h3>💡 Daily Nutrition Tips</h3>
+      <div class="tips-grid">
+        <div class="tip">
+          <div class="tip-title">Watch the Carbs</div>
+          <div class="tip-text">Keep carbs under 150g/day. Swap potatoes for extra vegetables when possible.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">Protein First</div>
+          <div class="tip-text">Aim for 30-40g protein per meal to stay full and preserve muscle.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">Beer Swap</div>
+          <div class="tip-text">One beer = ~150 cal + 13g carbs. Try sparkling water with lemon instead.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">Evening Meals</div>
+          <div class="tip-text">Keep dinner lighter on carbs. Focus on protein + vegetables after 6pm.</div>
+        </div>
       </div>
+    </div>
+
+    <div class="workout-preview">
+      <h3>🏋️ Starter Home Workout</h3>
+      <div class="workout-note">⚠️ <strong>Shoulder-friendly routine</strong> – All exercises modified to avoid overhead movements. Start slow, listen to your body!</div>
+      <div class="exercise-list">
+        <div class="exercise">
+          <span class="exercise-icon">🚶</span>
+          <div class="exercise-info">
+            <h4>Warm-up Walk in Place <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>3 minutes – Get blood flowing, gentle arm swings below shoulder height</p>
+          </div>
+        </div>
+        <div class="exercise">
+          <span class="exercise-icon">🦵</span>
+          <div class="exercise-info">
+            <h4>Bodyweight Squats <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>3 sets × 10 reps – Hands on hips or in front. Great for burning belly fat!</p>
+          </div>
+        </div>
+        <div class="exercise">
+          <span class="exercise-icon">🧱</span>
+          <div class="exercise-info">
+            <h4>Wall Push-ups <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>3 sets × 8-12 reps – Hands at chest height on wall, easier on shoulders</p>
+          </div>
+        </div>
+        <div class="exercise">
+          <span class="exercise-icon">🪑</span>
+          <div class="exercise-info">
+            <h4>Chair Step-ups <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>2 sets × 10 each leg – Use sturdy chair, builds legs and burns calories</p>
+          </div>
+        </div>
+        <div class="exercise">
+          <span class="exercise-icon">🌉</span>
+          <div class="exercise-info">
+            <h4>Glute Bridges <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>3 sets × 12 reps – Lying down, lift hips. Core + glutes, zero shoulder stress</p>
+          </div>
+        </div>
+        <div class="exercise">
+          <span class="exercise-icon">⏱️</span>
+          <div class="exercise-info">
+            <h4>Modified Plank (on knees) <span class="shoulder-safe">✓ Shoulder Safe</span></h4>
+            <p>3 × 20-30 seconds – Forearm plank on knees, targets core for belly</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="goals-section">
+      <h3>🎯 Weekly Goals</h3>
+      <div class="goal-item" onclick="toggleGoal(this)">
+        <div class="goal-check">✓</div>
+        <span class="goal-text">Complete 3 home workouts this week</span>
+      </div>
+      <div class="goal-item" onclick="toggleGoal(this)">
+        <div class="goal-check">✓</div>
+        <span class="goal-text">Stay under 1800 calories for 5 days</span>
+      </div>
+      <div class="goal-item" onclick="toggleGoal(this)">
+        <div class="goal-check">✓</div>
+        <span class="goal-text">Limit beer to 2 per week maximum</span>
+      </div>
+      <div class="goal-item" onclick="toggleGoal(this)">
+        <div class="goal-check">✓</div>
+        <span class="goal-text">Drink 8 glasses of water daily</span>
+      </div>
+      <div class="goal-item" onclick="toggleGoal(this)">
+        <div class="goal-check">✓</div>
+        <span class="goal-text">No eating after 8pm</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>🚭 Remember: Quitting smoking will boost your workout recovery and help you breathe easier during exercise.</p>
+      <p style="margin-top:8px">Built for your health journey • Tesco UK ingredients • Shoulder-friendly workouts</p>
     </div>
   </div>
-<script>
-var mealData = {
-  breakfast: [
-    {name:"Cheese Filo Pastry",desc:"Bulgarian-style filo with feta and eggs",calories:380,protein:16,carbs:32,fat:22,cuisine:"Bulgarian",ingredients:["4 sheets filo pastry","200g feta cheese","2 eggs","100ml Greek yogurt","50g butter","0.5 tsp bicarbonate of soda"],instructions:"1. Crumble feta in bowl.\n2. Beat eggs with yogurt and bicarb.\n3. Mix cheese into egg mixture.\n4. Brush filo with melted butter.\n5. Spread filling, roll into coils.\n6. Bake at 180C for 35-40 min."},
-    {name:"Crispy Potato Pancakes",desc:"Eastern European grated potato cakes",calories:340,protein:8,carbs:38,fat:18,cuisine:"Belarusian",ingredients:["4 large potatoes","1 onion","1 egg","2 tbsp plain flour","salt and pepper","vegetable oil","150ml soured cream"],instructions:"1. Grate potatoes and onion.\n2. Squeeze out liquid.\n3. Mix with egg, flour, seasoning.\n4. Fry spoonfuls until golden.\n5. Serve with soured cream."},
-    {name:"Sweet Quark Pancakes",desc:"Sweet cheese pancakes with jam",calories:300,protein:20,carbs:26,fat:14,cuisine:"Eastern European",ingredients:["250g quark","1 egg","3 tbsp plain flour","1 tbsp caster sugar","0.5 tsp vanilla extract","2 tbsp butter","100ml soured cream","3 tbsp raspberry jam"],instructions:"1. Mix quark with egg, flour, sugar, vanilla.\n2. Form small patties.\n3. Fry in butter until golden.\n4. Serve with soured cream and jam."},
-    {name:"Shakshuka",desc:"Eggs poached in spiced tomato sauce",calories:290,protein:18,carbs:16,fat:18,cuisine:"Mediterranean",ingredients:["3 eggs","400g chopped tomatoes","1 red pepper","1 onion","2 garlic cloves","1 tsp cumin","1 tsp paprika","2 tbsp olive oil","fresh parsley"],instructions:"1. Sauté onion and pepper.\n2. Add garlic, spices, cook 1 min.\n3. Add tomatoes, simmer 10 min.\n4. Make wells, crack eggs.\n5. Cover, cook until eggs set."},
-    {name:"Greek Yogurt Pancakes",desc:"Fluffy pancakes with honey and walnuts",calories:310,protein:12,carbs:38,fat:14,cuisine:"Greek",ingredients:["200g Greek yogurt","2 eggs","150g plain flour","1 tsp baking powder","2 tbsp honey","30g walnuts","0.5 tsp cinnamon"],instructions:"1. Mix yogurt, eggs, flour, baking powder.\n2. Fry spoonfuls until golden.\n3. Drizzle with honey.\n4. Top with walnuts and cinnamon."},
-    {name:"Buckwheat Porridge",desc:"Hearty toasted buckwheat with butter",calories:310,protein:10,carbs:48,fat:10,cuisine:"Eastern European",ingredients:["150g buckwheat groats","400ml water","0.5 tsp salt","2 tbsp butter","100ml milk","1 tbsp honey"],instructions:"1. Toast buckwheat in dry pan.\n2. Add water and salt, boil.\n3. Simmer 15-20 min covered.\n4. Stir in butter.\n5. Serve with milk and honey."},
-    {name:"Spanish Tomato Toast",desc:"Rustic toast with tomato and ham",calories:240,protein:6,carbs:32,fat:10,cuisine:"Spanish",ingredients:["2 slices sourdough bread","2 ripe tomatoes","2 tbsp olive oil","1 garlic clove","4 slices serrano ham","flaky sea salt"],instructions:"1. Toast bread until crispy.\n2. Rub with garlic.\n3. Grate tomato over toast.\n4. Drizzle with oil, add ham.\n5. Season with salt."},
-    {name:"Spinach Feta Cups",desc:"Greek spinach filo pastries",calories:280,protein:12,carbs:22,fat:18,cuisine:"Greek",ingredients:["200g spinach","100g feta cheese","4 sheets filo pastry","1 egg","1 small onion","fresh dill","50g butter","pinch of nutmeg"],instructions:"1. Sauté onion, add spinach.\n2. Cool, mix with feta, egg, dill.\n3. Cut filo, brush with butter.\n4. Fill and bake at 180C for 20 min."},
-    {name:"Hungarian Fried Bread",desc:"Fried dough with soured cream and cheese",calories:420,protein:10,carbs:52,fat:20,cuisine:"Hungarian",ingredients:["300g strong flour","7g dried yeast","200ml warm milk","1 tsp sugar","0.5 tsp salt","vegetable oil","150ml soured cream","100g cheddar cheese","2 garlic cloves"],instructions:"1. Mix yeast, sugar, warm milk.\n2. Add flour, salt, knead.\n3. Rise 1 hour.\n4. Stretch and fry until golden.\n5. Top with garlic, cream, cheese."},
-    {name:"Muesli with Quark",desc:"Healthy German breakfast bowl",calories:340,protein:18,carbs:42,fat:12,cuisine:"German",ingredients:["60g muesli","150g quark","100g mixed berries","2 tbsp honey","30g flaked almonds"],instructions:"1. Place quark in bowl.\n2. Add muesli and berries.\n3. Drizzle with honey.\n4. Top with almonds."},
-    {name:"Baked Feta with Tomato",desc:"Baked cheese with egg",calories:340,protein:18,carbs:8,fat:28,cuisine:"Bulgarian",ingredients:["150g feta cheese","1 tomato","1 green chilli","2 tbsp butter","1 egg","fresh parsley"],instructions:"1. Slice tomato and chilli.\n2. Place in ramekin with feta.\n3. Add butter, crack egg on top.\n4. Bake at 200C for 15-20 min."},
-    {name:"Thin Crepes with Jam",desc:"Bulgarian-style thin pancakes",calories:320,protein:10,carbs:42,fat:14,cuisine:"Bulgarian",ingredients:["2 eggs","200ml milk","100g plain flour","1 tbsp sugar","2 tbsp butter","4 tbsp raspberry jam","fresh berries"],instructions:"1. Whisk eggs, milk, flour, sugar.\n2. Cook thin crepes in butter.\n3. Spread with jam and roll.\n4. Serve with fresh berries."},
-    {name:"Spanish Potato Omelette",desc:"Classic tortilla española",calories:380,protein:16,carbs:32,fat:22,cuisine:"Spanish",ingredients:["4 eggs","3 potatoes","1 onion","100ml olive oil","0.5 tsp salt"],instructions:"1. Slice potatoes and onion thin.\n2. Fry slowly in oil until soft.\n3. Drain, mix with beaten eggs.\n4. Cook until set, flip.\n5. Serve in wedges."},
-    {name:"Buckwheat with Mushrooms",desc:"Savoury buckwheat breakfast",calories:320,protein:12,carbs:42,fat:12,cuisine:"Polish",ingredients:["150g buckwheat groats","200g chestnut mushrooms","1 onion","2 tbsp butter","fresh parsley","100ml soured cream"],instructions:"1. Cook buckwheat until fluffy.\n2. Sauté mushrooms and onion.\n3. Mix together.\n4. Top with soured cream and parsley."},
-    {name:"Serbian Cheese Bread",desc:"Soft bread with feta",calories:350,protein:14,carbs:38,fat:16,cuisine:"Serbian",ingredients:["300g plain flour","200g feta cheese","100ml vegetable oil","100g Greek yogurt","1 egg","1 tsp baking powder","2 tbsp sesame seeds"],instructions:"1. Mix flour and baking powder.\n2. Add crumbled feta, oil, yogurt, egg.\n3. Knead, shape into loaf.\n4. Top with sesame, bake at 180C for 30 min."},
-    {name:"Quark with Radishes",desc:"Fresh cheese with vegetables",calories:220,protein:16,carbs:12,fat:12,cuisine:"Eastern European",ingredients:["200g quark","6 radishes","2 spring onions","2 tbsp soured cream","fresh dill","2 slices rye bread"],instructions:"1. Mix quark with soured cream.\n2. Add sliced radishes and spring onions.\n3. Season with dill.\n4. Serve with rye bread."},
-    {name:"Fluffy Kefir Pancakes",desc:"Light Eastern European pancakes",calories:340,protein:10,carbs:44,fat:14,cuisine:"Eastern European",ingredients:["200ml kefir","1 egg","150g plain flour","2 tbsp sugar","0.5 tsp bicarbonate of soda","2 tbsp butter","100ml soured cream","3 tbsp jam"],instructions:"1. Mix kefir, egg, sugar.\n2. Add flour and bicarb.\n3. Fry until golden.\n4. Serve with cream and jam."},
-    {name:"Fried Cheese Sandwich",desc:"Bulgarian grilled cheese",calories:350,protein:18,carbs:28,fat:20,cuisine:"Bulgarian",ingredients:["2 slices white bread","100g cheddar cheese","1 egg","50ml milk","2 tbsp butter"],instructions:"1. Make cheese sandwich.\n2. Dip in egg and milk.\n3. Fry in butter until golden.\n4. Serve hot."},
-    {name:"Baked Quark Pudding",desc:"Sweet baked cheese with raisins",calories:340,protein:18,carbs:32,fat:16,cuisine:"Eastern European",ingredients:["400g quark","2 eggs","3 tbsp sugar","3 tbsp semolina","50g raisins","1 tsp vanilla extract","100ml soured cream"],instructions:"1. Mix quark, eggs, sugar, semolina, vanilla, raisins.\n2. Rest 15 min.\n3. Bake at 180C for 35-40 min.\n4. Serve with soured cream."},
-    {name:"Serbian Cornbread",desc:"Savoury cornbread with feta",calories:340,protein:14,carbs:38,fat:16,cuisine:"Serbian",ingredients:["200g polenta","200g Greek yogurt","2 eggs","100g feta cheese","100ml vegetable oil","1 tsp bicarbonate of soda"],instructions:"1. Mix polenta, yogurt, eggs, oil, bicarb.\n2. Fold in crumbled feta.\n3. Bake at 180C for 30-35 min.\n4. Cut into squares."}
-  ],
-  lunch: [
-    {name:"Bulgarian Salad",desc:"Classic salad with feta",calories:280,protein:12,carbs:14,fat:20,cuisine:"Bulgarian",ingredients:["2 tomatoes","1 cucumber","1 red pepper","0.5 red onion","100g feta cheese","2 tbsp olive oil","1 tbsp red wine vinegar","fresh parsley"],instructions:"1. Dice tomatoes, cucumber, pepper.\n2. Slice onion thinly.\n3. Combine, season with salt.\n4. Add oil and vinegar.\n5. Top with crumbled feta."},
-    {name:"Beetroot Soup",desc:"Hearty Eastern European borscht",calories:380,protein:28,carbs:32,fat:14,cuisine:"Eastern European",ingredients:["200g beef steak","2 beetroots","2 potatoes","1 carrot","1 onion","200g white cabbage","2 tbsp tomato puree","150ml soured cream","fresh dill"],instructions:"1. Boil beef 1 hour.\n2. Grate beetroots and carrot.\n3. Sauté vegetables.\n4. Add to broth with potatoes, cabbage.\n5. Serve with soured cream and dill."},
-    {name:"Cold Cucumber Soup",desc:"Refreshing Bulgarian yogurt soup",calories:180,protein:8,carbs:12,fat:12,cuisine:"Bulgarian",ingredients:["400g Greek yogurt","1 cucumber","3 garlic cloves","30g walnuts","2 tbsp olive oil","fresh dill","200ml cold water"],instructions:"1. Dice cucumber finely.\n2. Crush garlic with salt.\n3. Mix yogurt with water.\n4. Add cucumber, garlic, dill.\n5. Top with walnuts and oil."},
-    {name:"Greek Village Salad",desc:"Classic Greek salad with feta",calories:320,protein:10,carbs:12,fat:26,cuisine:"Greek",ingredients:["2 tomatoes","1 cucumber","1 green pepper","100g feta cheese","50g kalamata olives","0.5 red onion","4 tbsp olive oil","1 tsp dried oregano"],instructions:"1. Cut tomatoes into wedges.\n2. Slice cucumber and pepper.\n3. Add onion and olives.\n4. Place feta block on top.\n5. Drizzle with oil, add oregano."},
-    {name:"Hungarian Goulash Soup",desc:"Rich paprika beef soup",calories:420,protein:32,carbs:28,fat:20,cuisine:"Hungarian",ingredients:["300g beef steak","2 onions","2 potatoes","2 carrots","2 tbsp paprika","1 tomato","1 red pepper","1 tsp caraway seeds","fresh parsley"],instructions:"1. Brown beef cubes.\n2. Add onions, cook until soft.\n3. Add paprika off heat.\n4. Add vegetables and water.\n5. Simmer 1.5 hours."},
-    {name:"White Bean Soup",desc:"Bulgarian hearty bean soup",calories:340,protein:18,carbs:48,fat:10,cuisine:"Bulgarian",ingredients:["400g cannellini beans","1 onion","1 carrot","1 red pepper","2 tbsp tomato puree","1 tsp paprika","fresh mint","2 tbsp olive oil"],instructions:"1. Drain tinned beans.\n2. Sauté onion, carrot, pepper.\n3. Add beans, tomato puree, paprika.\n4. Simmer 20 minutes.\n5. Serve with fresh mint."},
-    {name:"Polish Dumplings",desc:"Potato and cheese pierogi",calories:420,protein:14,carbs:52,fat:18,cuisine:"Polish",ingredients:["300g plain flour","1 egg","150ml water","300g potatoes","100g cheddar cheese","1 onion","3 tbsp butter","150ml soured cream"],instructions:"1. Make dough with flour, egg, water.\n2. Mash potatoes with cheese, fried onion.\n3. Fill circles, pinch closed.\n4. Boil 3-4 minutes.\n5. Serve with butter and soured cream."},
-    {name:"Caprese Salad",desc:"Italian tomato mozzarella salad",calories:320,protein:16,carbs:8,fat:26,cuisine:"Italian",ingredients:["2 large tomatoes","200g mozzarella cheese","fresh basil","3 tbsp olive oil","1 tbsp balsamic glaze","salt and pepper"],instructions:"1. Slice tomatoes and mozzarella.\n2. Alternate on plate.\n3. Add basil leaves.\n4. Drizzle with oil and balsamic.\n5. Season to taste."},
-    {name:"Spanish Cold Tomato Soup",desc:"Refreshing gazpacho",calories:180,protein:4,carbs:18,fat:12,cuisine:"Spanish",ingredients:["500g ripe tomatoes","1 cucumber","1 green pepper","2 garlic cloves","50ml olive oil","2 tbsp sherry vinegar","50g stale bread"],instructions:"1. Roughly chop vegetables.\n2. Soak bread in water.\n3. Blend all ingredients.\n4. Strain, chill 2 hours.\n5. Serve with diced vegetables."},
-    {name:"Tzatziki Mezze Plate",desc:"Greek yogurt dip with pitta",calories:280,protein:12,carbs:32,fat:14,cuisine:"Greek",ingredients:["300g Greek yogurt","1 cucumber","3 garlic cloves","2 tbsp olive oil","fresh dill","4 pitta breads","100g cherry tomatoes","50g olives"],instructions:"1. Grate cucumber, squeeze dry.\n2. Mix with yogurt, garlic, dill, oil.\n3. Warm pitta bread.\n4. Serve with tomatoes and olives."},
-    {name:"Polish Tomato Soup",desc:"Creamy tomato soup with pasta",calories:340,protein:12,carbs:48,fat:12,cuisine:"Polish",ingredients:["500g tomatoes","1L chicken stock","150g small pasta","2 tbsp butter","2 tbsp double cream","1 onion","fresh basil","1 tsp sugar"],instructions:"1. Sauté onion in butter.\n2. Add tomatoes, cook down.\n3. Add stock, simmer 20 min.\n4. Blend smooth.\n5. Serve with pasta and cream."},
-    {name:"Bulgarian Meatballs",desc:"Grilled spiced meat patties",calories:380,protein:28,carbs:12,fat:26,cuisine:"Bulgarian",ingredients:["300g beef mince","1 onion","2 garlic cloves","1 tsp cumin","fresh parsley","1 egg","salt and pepper"],instructions:"1. Grate onion, squeeze liquid.\n2. Mix all ingredients.\n3. Form flat oval patties.\n4. Grill 4-5 min each side.\n5. Serve with salad."},
-    {name:"Mushroom Cream Bake",desc:"Creamy mushroom gratin",calories:340,protein:12,carbs:14,fat:28,cuisine:"Eastern European",ingredients:["300g chestnut mushrooms","1 onion","200ml soured cream","100g cheddar cheese","2 tbsp butter","1 tbsp plain flour","fresh dill","pinch of nutmeg"],instructions:"1. Sauté mushrooms and onion.\n2. Add flour, stir.\n3. Add soured cream, nutmeg.\n4. Top with cheese.\n5. Bake until bubbly."},
-    {name:"Potato Bacon Bake",desc:"Hearty baked potato casserole",calories:380,protein:14,carbs:38,fat:20,cuisine:"Eastern European",ingredients:["6 potatoes","200g bacon lardons","1 onion","200ml soured cream","2 eggs","2 tbsp butter","salt and pepper"],instructions:"1. Grate potatoes, squeeze dry.\n2. Fry bacon and onion.\n3. Mix all ingredients.\n4. Bake at 180C for 1 hour.\n5. Serve with extra soured cream."},
-    {name:"Serbian Stuffed Burger",desc:"Large grilled burger with cheese",calories:520,protein:38,carbs:28,fat:32,cuisine:"Serbian",ingredients:["400g beef mince","1 onion","2 garlic cloves","50g mascarpone cheese","4 flatbreads","4 tbsp ajvar","1 red onion","lettuce leaves"],instructions:"1. Mix mince with onion, garlic.\n2. Form large flat patties.\n3. Grill 5 min each side.\n4. Top with mascarpone.\n5. Serve in flatbread with ajvar."},
-    {name:"Polish Vegetable Salad",desc:"Creamy diced vegetable salad",calories:320,protein:10,carbs:28,fat:20,cuisine:"Polish",ingredients:["3 potatoes","2 carrots","200g frozen peas","3 pickled gherkins","3 eggs","200g mayonnaise","1 apple","fresh dill"],instructions:"1. Boil potatoes, carrots, eggs.\n2. Dice everything small.\n3. Add peas and gherkins.\n4. Mix with mayonnaise.\n5. Chill before serving."},
-    {name:"Cold Pink Beetroot Soup",desc:"Chilled beetroot soup",calories:220,protein:10,carbs:24,fat:10,cuisine:"Eastern European",ingredients:["2 cooked beetroots","500ml kefir","2 eggs","1 cucumber","4 radishes","fresh dill","2 spring onions","100ml soured cream"],instructions:"1. Hard boil eggs, chop.\n2. Grate beetroots, dice vegetables.\n3. Mix kefir with cold water.\n4. Combine everything.\n5. Serve chilled with soured cream."},
-    {name:"Spiced Bulgur Wraps",desc:"Turkish bulgur in lettuce",calories:340,protein:12,carbs:48,fat:12,cuisine:"Turkish",ingredients:["200g bulgur wheat","2 tbsp tomato puree","1 tbsp harissa paste","1 onion","fresh parsley","1 little gem lettuce","1 lemon","2 tbsp pomegranate molasses"],instructions:"1. Soak bulgur in hot water.\n2. Mix with pastes and onion.\n3. Season with salt.\n4. Wrap in lettuce.\n5. Add lemon and molasses."},
-    {name:"Turkish Stuffed Aubergine",desc:"Baked aubergine with tomato",calories:280,protein:6,carbs:24,fat:20,cuisine:"Turkish",ingredients:["2 aubergines","2 onions","4 tomatoes","4 garlic cloves","100ml olive oil","fresh parsley","1 tsp sugar","1 lemon"],instructions:"1. Halve aubergines, score flesh.\n2. Fry cut-side until golden.\n3. Sauté onions slowly.\n4. Add tomatoes, garlic, parsley.\n5. Fill and bake at 180C for 40 min."},
-    {name:"Romanian Grilled Meat Rolls",desc:"Spiced beef sausages",calories:420,protein:32,carbs:8,fat:30,cuisine:"Romanian",ingredients:["400g beef mince","100g pork mince","4 garlic cloves","0.5 tsp bicarbonate of soda","1 tsp dried thyme","100ml beef stock","English mustard","crusty bread"],instructions:"1. Mix meats with garlic, bicarb, thyme.\n2. Add stock for moisture.\n3. Rest 2 hours.\n4. Form sausage shapes.\n5. Grill on high heat. Serve with mustard."}
-  ],
-  dinner: [
-    {name:"Quick Moussaka",desc:"Speedy potato and meat bake",calories:480,protein:28,carbs:38,fat:26,cuisine:"Bulgarian",time:"35 min",ingredients:["400g potatoes","400g pork mince","1 onion","2 eggs","200g Greek yogurt","1 tsp paprika","2 tbsp vegetable oil","fresh parsley"],instructions:"1. Microwave sliced potatoes 5 min.\n2. Brown mince with onion.\n3. Layer potatoes and meat.\n4. Top with egg-yogurt mix.\n5. Bake at 200C for 20 min."},
-    {name:"Pork Schnitzel",desc:"Crispy breaded pork cutlet",calories:450,protein:38,carbs:24,fat:24,cuisine:"German",time:"25 min",ingredients:["2 pork loin steaks","100g breadcrumbs","50g plain flour","2 eggs","vegetable oil","1 lemon","200g potato salad"],instructions:"1. Pound pork thin.\n2. Coat in flour, egg, breadcrumbs.\n3. Fry 3-4 min each side.\n4. Serve with lemon and potato salad."},
-    {name:"Greek Pork Skewers",desc:"Quick souvlaki with tzatziki",calories:420,protein:36,carbs:18,fat:24,cuisine:"Greek",time:"30 min",ingredients:["400g pork loin","2 tbsp olive oil","1 lemon","2 tsp dried oregano","4 pitta breads","150g tzatziki","1 tomato","1 red onion"],instructions:"1. Cube pork, mix with oil, lemon, oregano.\n2. Thread onto skewers.\n3. Grill 4-5 min each side.\n4. Serve in pitta with tzatziki."},
-    {name:"Spaghetti Carbonara",desc:"Classic Roman pasta",calories:520,protein:24,carbs:52,fat:26,cuisine:"Italian",time:"25 min",ingredients:["200g spaghetti","150g pancetta","3 egg yolks","50g pecorino cheese","50g parmesan cheese","black pepper"],instructions:"1. Cook pasta.\n2. Fry pancetta until crispy.\n3. Mix yolks with cheeses.\n4. Toss hot pasta with pancetta.\n5. Add egg mixture off heat."},
-    {name:"Chicken Paprikash",desc:"Hungarian creamy chicken",calories:450,protein:38,carbs:18,fat:26,cuisine:"Hungarian",time:"35 min",ingredients:["4 chicken thighs","2 onions","3 tbsp paprika","200ml soured cream","1 tbsp plain flour","2 tbsp vegetable oil","200g egg noodles"],instructions:"1. Brown chicken, remove.\n2. Sauté onions.\n3. Add paprika off heat.\n4. Return chicken, add water, simmer.\n5. Stir in soured cream. Serve with noodles."},
-    {name:"Pan-Fried Trout",desc:"Simple fish with herbs",calories:380,protein:42,carbs:8,fat:22,cuisine:"Eastern European",time:"25 min",ingredients:["2 whole trout","4 tbsp butter","1 lemon","fresh dill","fresh parsley","2 garlic cloves","salt and pepper"],instructions:"1. Season fish inside and out.\n2. Stuff with lemon and herbs.\n3. Fry in butter 5-6 min each side.\n4. Baste with pan juices."},
-    {name:"Balkan Meat Fingers",desc:"Grilled spiced sausages",calories:420,protein:32,carbs:24,fat:24,cuisine:"Serbian",time:"25 min",ingredients:["400g beef mince","3 garlic cloves","1 tsp paprika","0.5 tsp bicarbonate of soda","4 flatbreads","50g mascarpone cheese","1 red onion"],instructions:"1. Mix mince with garlic, paprika, bicarb.\n2. Rest 10 min.\n3. Form finger shapes.\n4. Grill 3-4 min each side.\n5. Serve in flatbread with mascarpone."},
-    {name:"Garlic Oil Pasta",desc:"Simple aglio e olio",calories:420,protein:12,carbs:54,fat:20,cuisine:"Italian",time:"20 min",ingredients:["200g spaghetti","6 garlic cloves","100ml olive oil","1 tsp chilli flakes","fresh parsley","50g parmesan cheese"],instructions:"1. Cook pasta.\n2. Slice garlic, fry until golden.\n3. Add chilli flakes.\n4. Toss with pasta and parsley.\n5. Serve with parmesan."},
-    {name:"Stuffed Peppers",desc:"Peppers with meat and rice",calories:380,protein:24,carbs:32,fat:18,cuisine:"Bulgarian",time:"40 min",ingredients:["4 mixed peppers","300g pork mince","100g cooked rice","1 onion","200g passata","1 tsp paprika","150g Greek yogurt"],instructions:"1. Cut tops off peppers.\n2. Mix mince with rice, onion, paprika.\n3. Stuff peppers.\n4. Pour passata around.\n5. Bake at 200C for 30 min."},
-    {name:"Polish Breaded Pork Chop",desc:"Classic kotlet schabowy",calories:460,protein:36,carbs:28,fat:24,cuisine:"Polish",time:"25 min",ingredients:["2 pork chops","100g breadcrumbs","50g plain flour","2 eggs","vegetable oil","200g sauerkraut","300g mashed potato"],instructions:"1. Pound chops slightly.\n2. Coat in flour, egg, breadcrumbs.\n3. Fry 5-6 min each side.\n4. Serve with sauerkraut and mash."},
-    {name:"Greek Moussaka",desc:"Aubergine and lamb bake",calories:480,protein:26,carbs:28,fat:30,cuisine:"Greek",time:"40 min",ingredients:["1 large aubergine","300g lamb mince","200g tomato pasta sauce","200g white sauce","1 onion","0.5 tsp cinnamon","100g cheddar cheese"],instructions:"1. Slice and grill aubergine.\n2. Brown lamb with onion.\n3. Add tomato sauce and cinnamon.\n4. Layer and top with white sauce.\n5. Bake at 200C for 20 min."},
-    {name:"Mushroom Risotto",desc:"Creamy Italian rice",calories:450,protein:12,carbs:58,fat:20,cuisine:"Italian",time:"35 min",ingredients:["200g arborio rice","300g chestnut mushrooms","1 shallot","150ml white wine","700ml vegetable stock","50g parmesan cheese","3 tbsp butter","fresh thyme"],instructions:"1. Sauté mushrooms, set aside.\n2. Toast rice with shallot.\n3. Add wine, then stock gradually.\n4. Fold in mushrooms and parmesan.\n5. Finish with butter."},
-    {name:"Bulgarian Meat Sticks",desc:"Grilled kebapche",calories:400,protein:30,carbs:8,fat:28,cuisine:"Bulgarian",time:"25 min",ingredients:["400g beef mince","1 tsp cumin","4 garlic cloves","0.5 tsp bicarbonate of soda","4 tbsp ajvar","crusty bread","fresh parsley"],instructions:"1. Mix mince with cumin, garlic, bicarb.\n2. Shape into thick fingers.\n3. Grill 4-5 min each side.\n4. Serve with ajvar and bread."},
-    {name:"Chicken Gyros",desc:"Greek spiced chicken wraps",calories:480,protein:35,carbs:38,fat:22,cuisine:"Greek",time:"30 min",ingredients:["400g chicken thighs","2 tsp Greek seasoning","4 pitta breads","150g tzatziki","2 tomatoes","1 red onion","200g oven chips"],instructions:"1. Slice chicken, season.\n2. Fry on high heat 8-10 min.\n3. Warm pitta.\n4. Fill with chicken, tzatziki, vegetables.\n5. Serve with chips."},
-    {name:"Spanish Garlic Prawns",desc:"Quick gambas al ajillo",calories:380,protein:28,carbs:8,fat:28,cuisine:"Spanish",time:"15 min",ingredients:["300g raw king prawns","8 garlic cloves","100ml olive oil","1 dried red chilli","fresh parsley","crusty bread","1 lemon"],instructions:"1. Slice garlic thinly.\n2. Heat oil with chilli.\n3. Fry garlic until golden.\n4. Add prawns, cook 3-4 min.\n5. Serve with bread and lemon."},
-    {name:"Hungarian Sausage Stew",desc:"Paprika sausage with peppers",calories:440,protein:24,carbs:28,fat:28,cuisine:"Hungarian",time:"30 min",ingredients:["400g smoked sausage","2 mixed peppers","2 onions","2 tbsp paprika","200g chopped tomatoes","2 tbsp vegetable oil","crusty bread"],instructions:"1. Slice sausage, peppers, onions.\n2. Fry sausage until browned.\n3. Add vegetables.\n4. Add paprika and tomatoes.\n5. Simmer 10 min. Serve with bread."},
-    {name:"Salmon with Dill Sauce",desc:"Pan-seared salmon",calories:420,protein:38,carbs:8,fat:28,cuisine:"Eastern European",time:"20 min",ingredients:["2 salmon fillets","200ml soured cream","fresh dill","1 lemon","2 tbsp butter","1 garlic clove","salt and pepper"],instructions:"1. Season salmon.\n2. Sear in butter 4 min skin-down.\n3. Flip, cook 3 more min.\n4. Mix soured cream with dill, garlic, lemon.\n5. Serve salmon with sauce."},
-    {name:"Quick Bulgarian Pork Stew",desc:"Fast kavarma",calories:420,protein:32,carbs:18,fat:26,cuisine:"Bulgarian",time:"35 min",ingredients:["300g pork loin","2 onions","2 tomatoes","1 red pepper","1 tsp paprika","50ml white wine","2 eggs","fresh parsley"],instructions:"1. Slice pork thin, brown quickly.\n2. Add onions and pepper.\n3. Add tomatoes, wine, paprika.\n4. Simmer 15 min.\n5. Crack eggs on top, cover until set."},
-    {name:"Italian Sausage Pasta",desc:"Creamy pasta with sausage",calories:520,protein:22,carbs:48,fat:28,cuisine:"Italian",time:"25 min",ingredients:["200g penne pasta","200g pork sausages","100ml double cream","1 shallot","50g parmesan cheese","50ml white wine","fresh parsley"],instructions:"1. Cook pasta.\n2. Remove sausage meat, crumble and fry.\n3. Add shallot and wine.\n4. Add cream, simmer.\n5. Toss with pasta and parmesan."},
-    {name:"Greek Pork Souvlaki",desc:"Marinated pork skewers",calories:400,protein:34,carbs:24,fat:20,cuisine:"Greek",time:"30 min",ingredients:["400g pork shoulder","2 tbsp olive oil","1 lemon","2 tsp dried oregano","4 pitta breads","150g tzatziki","1 tomato","1 red onion","200g oven chips"],instructions:"1. Cube pork, marinate in oil, lemon, oregano.\n2. Thread onto skewers.\n3. Grill 4-5 min each side.\n4. Serve in pitta with tzatziki and chips."},
-    {name:"German Cheese Noodles",desc:"Cheesy spätzle-style pasta",calories:480,protein:20,carbs:42,fat:26,cuisine:"German",time:"30 min",ingredients:["300g egg noodles","200g gruyere cheese","2 onions","3 tbsp butter","fresh chives","pinch of nutmeg"],instructions:"1. Cook noodles.\n2. Fry onions in butter until crispy.\n3. Layer noodles and cheese.\n4. Top with onions.\n5. Bake at 200C for 10 min."},
-    {name:"Shakshuka Dinner",desc:"Eggs in spiced tomato",calories:340,protein:20,carbs:22,fat:20,cuisine:"Mediterranean",time:"25 min",ingredients:["4 eggs","400g chopped tomatoes","1 red pepper","1 onion","2 garlic cloves","1 tsp cumin","100g feta cheese","crusty bread","fresh coriander"],instructions:"1. Sauté onion and pepper.\n2. Add garlic, cumin, tomatoes.\n3. Simmer 10 min.\n4. Crack eggs, cover until set.\n5. Top with feta. Serve with bread."},
-    {name:"Ukrainian Potato Dumplings",desc:"Varenyky with bacon",calories:420,protein:14,carbs:52,fat:18,cuisine:"Ukrainian",time:"35 min",ingredients:["300g plain flour","1 egg","400g potatoes","1 onion","100g bacon lardons","150ml soured cream","fresh dill"],instructions:"1. Make dough with flour, egg, water.\n2. Mash potatoes.\n3. Fry bacon and onion.\n4. Fill dough circles, boil 5-7 min.\n5. Top with bacon and soured cream."},
-    {name:"Italian Rice Balls",desc:"Fried arancini",calories:440,protein:16,carbs:48,fat:22,cuisine:"Italian",time:"35 min",ingredients:["300g risotto rice","100g mozzarella cheese","50g frozen peas","100g breadcrumbs","2 eggs","vegetable oil","200g tomato pasta sauce"],instructions:"1. Cook risotto, cool.\n2. Mix with peas.\n3. Form balls with mozzarella inside.\n4. Coat in egg and breadcrumbs.\n5. Deep fry until golden."},
-    {name:"Romanian Pork with Polenta",desc:"Tochitura with egg",calories:480,protein:34,carbs:28,fat:28,cuisine:"Romanian",time:"35 min",ingredients:["300g pork loin","100g bacon lardons","4 garlic cloves","2 tbsp paprika","200g instant polenta","2 eggs","100g cheddar cheese","fresh parsley"],instructions:"1. Cube pork, fry with bacon.\n2. Add garlic and paprika.\n3. Make polenta.\n4. Fry eggs.\n5. Serve pork over polenta with egg and cheese."},
-    {name:"Cacio e Pepe",desc:"Roman cheese pepper pasta",calories:480,protein:18,carbs:52,fat:24,cuisine:"Italian",time:"20 min",ingredients:["200g spaghetti","150g pecorino cheese","2 tsp black pepper","salt"],instructions:"1. Cook pasta, reserve water.\n2. Toast pepper in dry pan.\n3. Grate pecorino finely.\n4. Toss pasta with cheese.\n5. Add pasta water for creaminess."},
-    {name:"Quick Greek Lamb Chops",desc:"Fast lamb with potatoes",calories:460,protein:38,carbs:12,fat:30,cuisine:"Greek",time:"30 min",ingredients:["4 lamb chops","3 garlic cloves","1 lemon","2 tbsp dried oregano","3 tbsp olive oil","400g baby potatoes","100g feta cheese"],instructions:"1. Microwave halved potatoes 5 min.\n2. Rub lamb with garlic, oregano, oil.\n3. Sear lamb 4 min each side.\n4. Fry potatoes until crispy.\n5. Serve with feta."},
-    {name:"Spanish Spicy Potatoes",desc:"Patatas bravas",calories:380,protein:8,carbs:42,fat:22,cuisine:"Spanish",time:"30 min",ingredients:["500g potatoes","200g tomato pasta sauce","1 tsp paprika","0.5 tsp cayenne pepper","100g garlic mayonnaise","vegetable oil","fresh parsley"],instructions:"1. Cube and parboil potatoes.\n2. Fry until crispy.\n3. Mix sauce with paprika and cayenne.\n4. Pile potatoes, add sauces.\n5. Garnish with parsley."},
-    {name:"Greek Baked Meatballs",desc:"Soutzoukakia in tomato",calories:440,protein:28,carbs:24,fat:28,cuisine:"Greek",time:"35 min",ingredients:["400g beef mince","1 egg","2 garlic cloves","1 tsp cumin","400g tomato pasta sauce","0.5 tsp cinnamon","200g basmati rice","fresh parsley"],instructions:"1. Mix mince with egg, garlic, cumin.\n2. Form oval shapes.\n3. Brown in pan.\n4. Add sauce with cinnamon.\n5. Simmer 20 min. Serve with rice."},
-    {name:"Hungarian Pepper Stew",desc:"Lecsó with eggs",calories:340,protein:16,carbs:22,fat:22,cuisine:"Hungarian",time:"30 min",ingredients:["4 mixed peppers","2 tomatoes","1 onion","100g smoked sausage","2 tbsp paprika","4 eggs","crusty bread"],instructions:"1. Slice vegetables and sausage.\n2. Fry sausage, add onion.\n3. Add peppers until soft.\n4. Add tomatoes and paprika.\n5. Crack eggs on top. Serve with bread."},
-    {name:"Spinach Feta Triangles",desc:"Quick spanakopita",calories:380,protein:16,carbs:28,fat:24,cuisine:"Greek",time:"30 min",ingredients:["400g spinach","200g feta cheese","1 egg","6 sheets filo pastry","60g butter","1 onion","fresh dill","pinch of nutmeg"],instructions:"1. Sauté onion and spinach.\n2. Mix with feta, egg, dill.\n3. Cut filo strips, brush with butter.\n4. Fill and fold into triangles.\n5. Bake at 200C for 15-18 min."},
-    {name:"Slovak Potato Dumplings",desc:"Halusky with cheese",calories:480,protein:18,carbs:52,fat:24,cuisine:"Slovak",time:"35 min",ingredients:["4 potatoes","200g plain flour","1 egg","150g feta cheese","50g cream cheese","150g bacon lardons","100ml soured cream","fresh chives"],instructions:"1. Grate potatoes, mix with flour, egg.\n2. Press into boiling water.\n3. Cook until they float.\n4. Fry bacon.\n5. Toss with cheeses and bacon."},
-    {name:"Turkish Boat Pizza",desc:"Pide with lamb",calories:460,protein:24,carbs:42,fat:24,cuisine:"Turkish",time:"35 min",ingredients:["250g pizza dough","200g lamb mince","1 onion","1 tomato","1 green pepper","1 tsp cumin","1 egg","fresh parsley"],instructions:"1. Fry mince with vegetables and cumin.\n2. Roll dough into oval.\n3. Add filling, fold edges up.\n4. Brush with egg.\n5. Bake at 220C for 15 min."},
-    {name:"Fried Stuffed Peppers",desc:"Cheese-stuffed peppers",calories:340,protein:16,carbs:24,fat:22,cuisine:"Bulgarian",time:"30 min",ingredients:["4 roasted red peppers","200g feta cheese","2 eggs","100g plain flour","vegetable oil","150g Greek yogurt"],instructions:"1. Use jarred roasted peppers.\n2. Stuff with feta.\n3. Dip in flour then egg.\n4. Fry until golden.\n5. Serve with cold yogurt."},
-    {name:"Romanian Grilled Mince Rolls",desc:"Mici with mustard",calories:420,protein:32,carbs:12,fat:28,cuisine:"Romanian",time:"25 min",ingredients:["400g beef mince","100g pork mince","0.5 tsp bicarbonate of soda","4 garlic cloves","1 tsp dried thyme","1 tsp paprika","English mustard","crusty bread"],instructions:"1. Mix meats with seasonings.\n2. Add splash of water.\n3. Rest 10 min.\n4. Form finger shapes.\n5. Grill 3-4 min each side. Serve with mustard."}
-  ]
-};
 
-var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-var meals = ['breakfast','lunch','dinner'];
-var mealLabels = {breakfast:'🌅 Breakfast', lunch:'☀️ Lunch', dinner:'🌙 Dinner'};
-var categoryLabels = {
-  meat:'🥩 Meat & Fish',
-  dairy:'🧀 Dairy & Eggs',
-  vegetables:'🥬 Vegetables',
-  fruits:'🍋 Fruits',
-  grains:'🌾 Bread & Grains',
-  spices:'🌿 Herbs & Spices',
-  pantry:'🫙 Pantry Staples',
-  other:'📦 Other'
-};
-var selections = {};
-var openSelector = null;
-var expandedRecipe = null;
-
-function render() {
-  renderPlanTab();
-  renderRecipesTab();
-  renderShoppingTab();
-}
-
-function getDayTotals(day) {
-  var totals = {calories:0, protein:0, carbs:0, fat:0};
-  meals.forEach(function(meal) {
-    var sel = selections[day + '-' + meal];
-    if (sel) {
-      totals.calories += sel.calories;
-      totals.protein += sel.protein;
-      totals.carbs += sel.carbs;
-      totals.fat += sel.fat;
+  <script>
+    function toggleGoal(el) {
+      const check = el.querySelector('.goal-check');
+      const text = el.querySelector('.goal-text');
+      check.classList.toggle('checked');
+      text.classList.toggle('checked');
     }
-  });
-  return totals;
-}
-
-function renderPlanTab() {
-  var container = document.getElementById('plan-tab');
-  var totalMeals = Object.keys(selections).length;
-  var pct = (totalMeals / 21) * 100;
-  
-  var html = '<div class="progress-bar"><div class="info"><span><strong>' + totalMeals + ' of 21</strong> meals selected</span><span>Dad target: ~1600-1800 cal/day</span></div><div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div></div>';
-  
-  days.forEach(function(day) {
-    var totals = getDayTotals(day);
-    var hasSelections = meals.some(function(m) { return selections[day + '-' + m]; });
-    
-    html += '<div class="day-card"><div class="day-header"><h2>' + day + '</h2>';
-    if (hasSelections) {
-      html += '<span class="day-macros">' + totals.calories + ' cal | P:' + totals.protein + 'g | C:' + totals.carbs + 'g | F:' + totals.fat + 'g</span>';
-    }
-    html += '</div>';
-    
-    meals.forEach(function(meal) {
-      var key = day + '-' + meal;
-      var selected = selections[key];
-      var isOpen = openSelector === key;
-      
-      html += '<div class="meal-row"><span class="meal-label">' + mealLabels[meal] + '</span><div class="meal-selector">';
-      html += '<button class="meal-btn' + (selected ? ' selected' : '') + '" onclick="toggleSelector(\'' + day + '\',\'' + meal + '\')">';
-      
-      if (selected) {
-        html += '<div style="display:flex;justify-content:space-between;align-items:center;width:100%"><div>';
-        html += '<span class="name">' + selected.name + '</span> <span class="meta">(' + selected.cuisine + ')</span>';
-        if (selected.time) html += '<span class="time-badge">' + selected.time + '</span>';
-        html += '</div><span class="cals">' + selected.calories + ' cal</span></div>';
-      } else {
-        html += '<span style="color:#9ca3af">Click to select a meal...</span>';
-      }
-      html += '</button>';
-      
-      if (isOpen) html += renderDropdown(day, meal);
-      html += '</div>';
-      if (selected) html += '<button class="clear-btn" onclick="clearSelection(\'' + day + '\',\'' + meal + '\')">×</button>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
-  
-  container.innerHTML = html;
-}
-
-function renderDropdown(day, meal) {
-  var recipes = mealData[meal];
-  var html = '<div class="dropdown">';
-  
-  recipes.forEach(function(recipe, idx) {
-    html += '<div class="dropdown-item" onclick="selectMeal(\'' + day + '\',\'' + meal + '\',' + idx + ')">';
-    html += '<div class="top"><span class="title">' + recipe.name;
-    if (recipe.time) html += ' <span class="time-badge">' + recipe.time + '</span>';
-    html += '</span><span class="cuisine">' + recipe.cuisine + '</span></div>';
-    html += '<div class="macros">' + recipe.calories + ' cal | P:' + recipe.protein + 'g | C:' + recipe.carbs + 'g | F:' + recipe.fat + 'g</div>';
-    html += '<div class="desc">' + recipe.desc + '</div>';
-    html += '<div class="ingredients">';
-    recipe.ingredients.forEach(function(ing) {
-      html += '<span class="ing">' + ing + '</span>';
-    });
-    html += '</div></div>';
-  });
-  
-  html += '</div>';
-  return html;
-}
-
-function renderRecipesTab() {
-  var container = document.getElementById('recipes-tab');
-  var totalMeals = Object.keys(selections).length;
-  
-  if (totalMeals === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">📝</div><h3>No meals selected yet</h3><p>Go to the Plan tab and select your meals to see recipes here.</p></div>';
-    return;
-  }
-  
-  var html = '';
-  days.forEach(function(day) {
-    var dayMeals = [];
-    meals.forEach(function(m) {
-      if (selections[day + '-' + m]) {
-        dayMeals.push({meal: m, recipe: selections[day + '-' + m]});
-      }
-    });
-    
-    if (dayMeals.length === 0) return;
-    
-    html += '<div class="recipe-card"><div class="recipe-day-header">' + day + '</div>';
-    dayMeals.forEach(function(item) {
-      var key = day + '-' + item.meal;
-      var isExpanded = expandedRecipe === key;
-      var recipe = item.recipe;
-      
-      html += '<div class="recipe-item"><button class="recipe-toggle" onclick="toggleRecipe(\'' + day + '\',\'' + item.meal + '\')">';
-      html += '<div><div class="meal-type">' + mealLabels[item.meal] + '</div>';
-      html += '<div class="title">' + recipe.name;
-      if (recipe.time) html += ' <span class="time-badge">' + recipe.time + '</span>';
-      html += '</div><div class="desc">' + recipe.desc + '</div></div>';
-      html += '<span class="arrow">' + (isExpanded ? '▲' : '▼') + '</span></button>';
-      
-      html += '<div class="recipe-details" style="display:' + (isExpanded ? 'block' : 'none') + '">';
-      html += '<div class="macro-tags">';
-      html += '<span class="macro-tag cal">' + recipe.calories + ' cal</span>';
-      html += '<span class="macro-tag pro">P:' + recipe.protein + 'g</span>';
-      html += '<span class="macro-tag carb">C:' + recipe.carbs + 'g</span>';
-      html += '<span class="macro-tag fat">F:' + recipe.fat + 'g</span>';
-      if (recipe.time) html += '<span class="macro-tag time">' + recipe.time + '</span>';
-      html += '</div>';
-      
-      html += '<div class="recipe-grid"><div class="recipe-section"><h4>📦 Ingredients</h4><ul>';
-      recipe.ingredients.forEach(function(ing) {
-        html += '<li>' + ing + '</li>';
-      });
-      html += '</ul></div><div class="recipe-section"><h4>👨‍🍳 Instructions</h4>';
-      recipe.instructions.split('\n').forEach(function(step) {
-        html += '<p>' + step + '</p>';
-      });
-      html += '</div></div></div></div>';
-    });
-    html += '</div>';
-  });
-  
-  html += '<div class="btn-row"><button class="copy-btn" onclick="printRecipes()">🖨️ Print Recipes</button>';
-  html += '<button class="btn-secondary" onclick="expandAllRecipes()">📖 Expand All</button></div>';
-  
-  container.innerHTML = html;
-}
-
-function renderShoppingTab() {
-  var container = document.getElementById('shopping-tab');
-  var totalMeals = Object.keys(selections).length;
-  
-  if (totalMeals === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><h3>No meals selected yet</h3><p>Go to the Plan tab and select your meals to generate a shopping list.</p></div>';
-    return;
-  }
-  
-  var shoppingList = getShoppingList();
-  var grouped = {};
-  shoppingList.forEach(function(item) {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
-  });
-  
-  var catOrder = ['meat','dairy','vegetables','fruits','grains','spices','pantry','other'];
-  
-  var html = '<div class="shopping-list"><h2>🛒 Tesco Shopping List (' + shoppingList.length + ' items)</h2>';
-  html += '<div class="shopping-info">Portions for: 👨 Dad + 👩 Mum + 👧 Child (' + totalMeals + ' meals). All items available at Tesco UK.</div>';
-  
-  catOrder.forEach(function(cat) {
-    if (grouped[cat] && grouped[cat].length > 0) {
-      html += '<div class="category-section"><h3 class="category-header">' + categoryLabels[cat] + '</h3>';
-      grouped[cat].sort(function(a,b) { return a.name.localeCompare(b.name); });
-      grouped[cat].forEach(function(item) {
-        html += '<div class="shopping-item"><input type="checkbox"><span>' + item.displayName + '</span></div>';
-      });
-      html += '</div>';
-    }
-  });
-  
-  html += '<div class="btn-row"><button class="copy-btn" onclick="copyList()">📋 Copy to Clipboard</button>';
-  html += '<button class="btn-secondary" onclick="shareList()">📤 Share</button>';
-  html += '<button class="btn-secondary" onclick="showQR()">📱 Send to Phone</button></div></div>';
-  
-  container.innerHTML = html;
-}
-
-function getShoppingList() {
-  var ingredientMap = {};
-  
-  Object.keys(selections).forEach(function(key) {
-    var recipe = selections[key];
-    if (!recipe) return;
-    
-    recipe.ingredients.forEach(function(ing) {
-      var parsed = parseIngredient(ing);
-      var normKey = normalizeKey(parsed.name);
-      
-      if (ingredientMap[normKey]) {
-        if (parsed.amount) {
-          ingredientMap[normKey].amounts.push(parsed.amount);
-        }
-        ingredientMap[normKey].count++;
-      } else {
-        ingredientMap[normKey] = {
-          name: cleanName(parsed.name),
-          amounts: parsed.amount ? [parsed.amount] : [],
-          count: 1,
-          category: categorize(ing)
-        };
-      }
-    });
-  });
-  
-  var list = [];
-  Object.keys(ingredientMap).forEach(function(key) {
-    var item = ingredientMap[key];
-    item.displayName = formatDisplay(item);
-    list.push(item);
-  });
-  
-  return list.sort(function(a,b) { return a.name.localeCompare(b.name); });
-}
-
-function parseIngredient(ing) {
-  var s = ing.trim();
-  
-  // Handle fractions
-  s = s.replace(/½/g, '0.5').replace(/¼/g, '0.25').replace(/¾/g, '0.75').replace(/⅓/g, '0.33').replace(/⅔/g, '0.67');
-  
-  // Match: number + optional unit + name
-  var match = s.match(/^(\d+(?:\.\d+)?)\s*(kg|g|ml|l|tbsp|tsp|sheets?|cloves?|slices?|large|small|medium)?\s+(.+)$/i);
-  
-  if (match) {
-    return {
-      amount: { qty: parseFloat(match[1]), unit: (match[2] || '').toLowerCase() },
-      name: match[3]
-    };
-  }
-  
-  // Try just number + name
-  var match2 = s.match(/^(\d+(?:\.\d+)?)\s+(.+)$/);
-  if (match2) {
-    return {
-      amount: { qty: parseFloat(match2[1]), unit: 'pcs' },
-      name: match2[2]
-    };
-  }
-  
-  return { amount: null, name: s };
-}
-
-function normalizeKey(name) {
-  var n = name.toLowerCase();
-  
-  // Remove common prefixes
-  n = n.replace(/^tesco\s+/i, '');
-  n = n.replace(/^fresh\s+/i, '');
-  n = n.replace(/^dried\s+/i, '');
-  n = n.replace(/^ground\s+/i, '');
-  n = n.replace(/^chopped\s+/i, '');
-  n = n.replace(/^ripe\s+/i, '');
-  n = n.replace(/^large\s+/i, '');
-  n = n.replace(/^small\s+/i, '');
-  n = n.replace(/^mixed\s+/i, '');
-  n = n.replace(/^baby\s+/i, '');
-  
-  // Normalize plurals
-  n = n.replace(/\beggs\b/g, 'egg');
-  n = n.replace(/\bonions\b/g, 'onion');
-  n = n.replace(/\btomatoes\b/g, 'tomato');
-  n = n.replace(/\bpotatoes\b/g, 'potato');
-  n = n.replace(/\bpeppers\b/g, 'pepper');
-  n = n.replace(/\bcarrots\b/g, 'carrot');
-  n = n.replace(/\bmushrooms\b/g, 'mushroom');
-  n = n.replace(/\bolives\b/g, 'olive');
-  
-  // Normalize similar items
-  var subs = {
-    'extra virgin olive oil': 'olive oil',
-    'vegetable oil': 'cooking oil',
-    'sunflower oil': 'cooking oil',
-    'feta cheese': 'feta',
-    'greek feta': 'feta',
-    'feta block': 'feta',
-    'mature cheddar': 'cheddar',
-    'cheddar cheese': 'cheddar',
-    'gruyere cheese': 'gruyere',
-    'parmesan cheese': 'parmesan',
-    'pecorino cheese': 'pecorino',
-    'mozzarella cheese': 'mozzarella',
-    'cream cheese': 'cream cheese',
-    'mascarpone cheese': 'mascarpone',
-    'greek yogurt': 'greek yogurt',
-    'natural yogurt': 'yogurt',
-    'plain flour': 'flour',
-    'strong flour': 'flour',
-    'strong white flour': 'flour',
-    'self-raising flour': 'self-raising flour',
-    'caster sugar': 'sugar',
-    'granulated sugar': 'sugar',
-    'brown onion': 'onion',
-    'white onion': 'onion',
-    'red onion': 'onion',
-    'spring onion': 'spring onion',
-    'green pepper': 'pepper',
-    'red pepper': 'pepper',
-    'mixed pepper': 'pepper',
-    'cherry tomato': 'tomato',
-    'ripe tomato': 'tomato',
-    'chopped tomato': 'tinned tomato',
-    'chestnut mushroom': 'mushroom',
-    'button mushroom': 'mushroom',
-    'smoked paprika': 'paprika',
-    'sweet paprika': 'paprika',
-    'hot paprika': 'paprika',
-    'chicken thigh': 'chicken thigh',
-    'chicken thigh fillet': 'chicken thigh',
-    'pork loin steak': 'pork loin',
-    'pork loin': 'pork loin',
-    'pork shoulder': 'pork shoulder',
-    'beef steak': 'beef steak',
-    'beef stewing steak': 'beef steak',
-    'beef mince': 'beef mince',
-    'pork mince': 'pork mince',
-    'lamb mince': 'lamb mince',
-    'bacon lardon': 'bacon lardon',
-    'smoked bacon lardon': 'bacon lardon',
-    'pancetta': 'pancetta',
-    'pancetta cube': 'pancetta',
-    'pork sausage': 'pork sausage',
-    'smoked sausage': 'smoked sausage',
-    'polish sausage': 'smoked sausage',
-    'pitta bread': 'pitta',
-    'flatbread': 'flatbread',
-    'crusty bread': 'bread',
-    'sourdough bread': 'bread',
-    'sourdough': 'bread',
-    'white bread': 'bread',
-    'rye bread': 'rye bread',
-    'kalamata olive': 'olive',
-    'black olive': 'olive',
-    'clear honey': 'honey',
-    'runny honey': 'honey',
-    'soured cream': 'soured cream',
-    'sour cream': 'soured cream',
-    'double cream': 'double cream',
-    'tomato pasta sauce': 'pasta sauce',
-    'tomato puree': 'tomato puree',
-    'tomato purée': 'tomato puree',
-    'vegetable stock': 'stock',
-    'chicken stock': 'stock',
-    'beef stock': 'stock'
-  };
-  
-  for (var from in subs) {
-    if (n.indexOf(from) !== -1) {
-      n = subs[from];
-      break;
-    }
-  }
-  
-  return n.replace(/\s+/g, ' ').trim();
-}
-
-function cleanName(name) {
-  var n = name.replace(/^tesco\s+/i, '');
-  // Singularize common ingredients
-  n = n.replace(/\beggs\b/gi, 'egg');
-  n = n.replace(/\bonions\b/gi, 'onion');
-  n = n.replace(/\btomatoes\b/gi, 'tomato');
-  n = n.replace(/\bpotatoes\b/gi, 'potato');
-  n = n.replace(/\bpeppers\b/gi, 'pepper');
-  n = n.replace(/\bcarrots\b/gi, 'carrot');
-  n = n.replace(/\bmushrooms\b/gi, 'mushroom');
-  n = n.replace(/\bolivess\b/gi, 'olive');
-  n = n.replace(/\byolks\b/gi, 'yolk');
-  n = n.replace(/\bcloves\b/gi, 'clove');
-  return n.charAt(0).toUpperCase() + n.slice(1);
-}
-
-function formatDisplay(item) {
-  var validAmounts = item.amounts.filter(function(a) { return a && a.qty; });
-  
-  if (validAmounts.length === 0) {
-    return item.count > 1 ? item.name + ' (x' + item.count + ')' : item.name;
-  }
-  
-  // Convert units and sum
-  var totals = { g: 0, ml: 0, pcs: 0 };
-  
-  validAmounts.forEach(function(a) {
-    var qty = a.qty;
-    var unit = a.unit || '';
-    
-    if (unit === 'kg') { totals.g += qty * 1000; }
-    else if (unit === 'g') { totals.g += qty; }
-    else if (unit === 'l') { totals.ml += qty * 1000; }
-    else if (unit === 'ml') { totals.ml += qty; }
-    else if (unit === 'tbsp') { totals.ml += qty * 15; }
-    else if (unit === 'tsp') { totals.ml += qty * 5; }
-    else { totals.pcs += qty; }
-  });
-  
-  var parts = [];
-  var name = item.name;
-  
-  if (totals.g > 0) {
-    if (totals.g >= 1000) {
-      parts.push((Math.ceil(totals.g / 100) / 10) + 'kg');
-    } else {
-      parts.push(Math.ceil(totals.g) + 'g');
-    }
-  }
-  
-  if (totals.ml > 0) {
-    if (totals.ml >= 1000) {
-      parts.push((Math.ceil(totals.ml / 100) / 10) + 'L');
-    } else {
-      parts.push(Math.ceil(totals.ml) + 'ml');
-    }
-  }
-  
-  if (totals.pcs > 0) {
-    var pcsRounded = Math.ceil(totals.pcs);
-    parts.push(pcsRounded);
-    // Pluralize name if more than 1
-    if (pcsRounded > 1) {
-      name = pluralize(name);
-    }
-  }
-  
-  if (parts.length === 0) {
-    return name;
-  }
-  
-  return parts.join(' + ') + ' ' + name;
-}
-
-function pluralize(word) {
-  // Check if already plural (ends in s but not ss)
-  if (word.match(/[^s]s$/i) && !word.match(/ss$/i)) {
-    return word; // Already plural
-  }
-  
-  var w = word.toLowerCase();
-  
-  // Common ingredient plurals
-  var irregulars = {
-    'egg': 'Eggs',
-    'egg yolk': 'Egg yolks',
-    'onion': 'Onions', 
-    'tomato': 'Tomatoes',
-    'potato': 'Potatoes',
-    'pepper': 'Peppers',
-    'carrot': 'Carrots',
-    'mushroom': 'Mushrooms',
-    'olive': 'Olives',
-    'garlic clove': 'Garlic cloves',
-    'pitta': 'Pittas',
-    'flatbread': 'Flatbreads',
-    'chicken thigh': 'Chicken thighs',
-    'pork chop': 'Pork chops',
-    'lamb chop': 'Lamb chops',
-    'sausage': 'Sausages',
-    'prawn': 'Prawns',
-    'radish': 'Radishes',
-    'aubergine': 'Aubergines',
-    'courgette': 'Courgettes',
-    'beetroot': 'Beetroots',
-    'apple': 'Apples',
-    'lemon': 'Lemons',
-    'spring onion': 'Spring onions'
-  };
-  
-  if (irregulars[w]) return irregulars[w];
-  
-  // Default pluralization rules
-  if (w.match(/(s|sh|ch|x|z)$/)) return word + 'es';
-  if (w.match(/[^aeiou]y$/)) return word.slice(0,-1) + 'ies';
-  
-  return word + 's';
-}
-
-function categorize(ing) {
-  var i = ing.toLowerCase();
-  
-  var cats = {
-    meat: ['pork','beef','chicken','lamb','bacon','sausage','mince','pancetta','ham','thigh','prawn','salmon','trout','fish','lardons'],
-    dairy: ['milk','cream','yogurt','cheese','butter','egg','feta','mozzarella','parmesan','pecorino','quark','kefir','cheddar','mascarpone','gruyere'],
-    vegetables: ['potato','onion','garlic','tomato','pepper','cucumber','carrot','cabbage','beetroot','aubergine','mushroom','spinach','radish','lettuce','olive','pea','celery','gherkin','sauerkraut'],
-    fruits: ['lemon','apple','berry','berries','raisin','pomegranate'],
-    grains: ['flour','bread','pasta','rice','spaghetti','noodle','oat','buckwheat','semolina','pitta','flatbread','filo','dough','crumb','polenta','bulgur'],
-    spices: ['salt','pepper','paprika','cumin','oregano','thyme','dill','parsley','basil','mint','cinnamon','nutmeg','caraway','chilli','vanilla','coriander','seasoning','cayenne','harissa'],
-    pantry: ['oil','vinegar','puree','passata','sauce','stock','wine','honey','sugar','jam','baking','bicarb','bicarbonate','ajvar','mayonnaise','mustard','molasses']
-  };
-  
-  for (var cat in cats) {
-    for (var j = 0; j < cats[cat].length; j++) {
-      if (i.indexOf(cats[cat][j]) !== -1) return cat;
-    }
-  }
-  return 'other';
-}
-
-function toggleSelector(day, meal) {
-  var key = day + '-' + meal;
-  openSelector = (openSelector === key) ? null : key;
-  render();
-}
-
-function selectMeal(day, meal, idx) {
-  selections[day + '-' + meal] = mealData[meal][idx];
-  openSelector = null;
-  render();
-}
-
-function clearSelection(day, meal) {
-  delete selections[day + '-' + meal];
-  render();
-}
-
-function toggleRecipe(day, meal) {
-  var key = day + '-' + meal;
-  expandedRecipe = (expandedRecipe === key) ? null : key;
-  renderRecipesTab();
-}
-
-function expandAllRecipes() {
-  var details = document.querySelectorAll('.recipe-details');
-  details.forEach(function(el) { el.style.display = 'block'; });
-  var arrows = document.querySelectorAll('.arrow');
-  arrows.forEach(function(el) { el.textContent = '▲'; });
-}
-
-function printRecipes() {
-  expandAllRecipes();
-  setTimeout(function() { window.print(); }, 300);
-}
-
-function copyList() {
-  var list = getShoppingList();
-  var grouped = {};
-  list.forEach(function(item) {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
-  });
-  
-  var catOrder = ['meat','dairy','vegetables','fruits','grains','spices','pantry','other'];
-  var text = 'TESCO SHOPPING LIST\n===================\n';
-  
-  catOrder.forEach(function(cat) {
-    if (grouped[cat] && grouped[cat].length > 0) {
-      text += '\n' + categoryLabels[cat] + '\n';
-      grouped[cat].sort(function(a,b) { return a.name.localeCompare(b.name); });
-      grouped[cat].forEach(function(item) {
-        text += '[ ] ' + item.displayName + '\n';
-      });
-    }
-  });
-  
-  navigator.clipboard.writeText(text).then(function() {
-    alert('Shopping list copied!');
-  });
-}
-
-function shareList() {
-  var list = getShoppingList();
-  var text = 'Tesco Shopping List:\n';
-  list.forEach(function(item) {
-    text += '- ' + item.displayName + '\n';
-  });
-  
-  if (navigator.share) {
-    navigator.share({ title: 'Shopping List', text: text });
-  } else {
-    copyList();
-  }
-}
-
-function showQR() {
-  var list = getShoppingList();
-  var grouped = {};
-  list.forEach(function(item) {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
-  });
-  
-  var catOrder = ['meat','dairy','vegetables','fruits','grains','spices','pantry','other'];
-  var text = 'TESCO SHOPPING LIST\n';
-  
-  catOrder.forEach(function(cat) {
-    if (grouped[cat] && grouped[cat].length > 0) {
-      text += '\n' + categoryLabels[cat].replace(/[^\w\s&]/g, '') + '\n';
-      grouped[cat].sort(function(a,b) { return a.name.localeCompare(b.name); });
-      grouped[cat].forEach(function(item) {
-        text += '- ' + item.displayName + '\n';
-      });
-    }
-  });
-  
-  // Generate QR code using API
-  var encoded = encodeURIComponent(text);
-  var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encoded;
-  
-  document.getElementById('qr-image').src = qrUrl;
-  document.getElementById('qr-modal').classList.add('show');
-}
-
-function closeQR(event) {
-  if (!event || event.target.id === 'qr-modal') {
-    document.getElementById('qr-modal').classList.remove('show');
-  }
-}
-
-// Tab switching
-document.querySelectorAll('.tab').forEach(function(tab) {
-  tab.addEventListener('click', function() {
-    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-    tab.classList.add('active');
-    document.getElementById('plan-tab').classList.add('hidden');
-    document.getElementById('recipes-tab').classList.add('hidden');
-    document.getElementById('shopping-tab').classList.add('hidden');
-    document.getElementById(tab.dataset.tab + '-tab').classList.remove('hidden');
-  });
-});
-
-// Initial render
-render();
-</script>
+  </script>
 </body>
 </html>
